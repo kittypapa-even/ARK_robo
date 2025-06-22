@@ -32,6 +32,8 @@
 /* USER CODE BEGIN PV */
 /* Private variables ---------------------------------------------------------*/
 
+uint8_t  myUsbRxData[64] = { 0 };   // 接收到的数据
+uint16_t myUsbRxNum = 0;            // 接收到的字节数
 /* USER CODE END PV */
 
 /** @addtogroup STM32_USB_OTG_DEVICE_LIBRARY
@@ -261,6 +263,12 @@ static int8_t CDC_Control_FS(uint8_t cmd, uint8_t* pbuf, uint16_t length)
 static int8_t CDC_Receive_FS(uint8_t* Buf, uint32_t *Len)
 {
   /* USER CODE BEGIN 6 */
+  memset(myUsbRxData, 0, 64);                     // 清0缓存区
+  memcpy(myUsbRxData, Buf, *Len);                 // 把接收到的数据，复制到自己的缓存区中
+  myUsbRxNum = *Len;                              // 复制字节数
+  memset(Buf, 0, 64);                             // 处理完数据，清0接收缓存;
+
+  // CubeMX生成的代码，保留
   USBD_CDC_SetRxBuffer(&hUsbDeviceFS, &Buf[0]);
   USBD_CDC_ReceivePacket(&hUsbDeviceFS);
   return (USBD_OK);

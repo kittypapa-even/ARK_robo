@@ -3,8 +3,6 @@
 
 /* Includes ------------------------------------------------------------------*/
 
-#include <stdint.h>
-#include <string.h>
 #include <algorithm>
 #include <cmath>
 #include "brush_motor.hpp"
@@ -13,6 +11,8 @@
 extern "C" {
 #endif
 
+#include <stdint.h>
+#include <string.h>
 #include "main.h"
 #include "tim.h"
 
@@ -74,7 +74,7 @@ public:
 public:
     static chassis_c chassis_instance;
     // static chassis_c& instance() ;
-private:
+public:
     chassis_c() = default;
     ~chassis_c() = default;
     chassis_c(const chassis_c&) = delete;            // 禁止拷贝构造

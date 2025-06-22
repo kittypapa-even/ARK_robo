@@ -26,13 +26,13 @@ void Encoder::start() {
     _lastCount = __HAL_TIM_GET_COUNTER(_htim);
 }
 
-int32_t Encoder::getCount() {
+int32_t Encoder::getCount() const {
     return __HAL_TIM_GET_COUNTER(_htim);
 }
 
-int32_t Encoder::getDelta() {
-    int32_t current = __HAL_TIM_GET_COUNTER(_htim);
-    int32_t delta = current - _lastCount;
+float Encoder::getDelta() {
+    float current = __HAL_TIM_GET_COUNTER(_htim);
+    float delta = current - _lastCount;
 
     // 处理溢出,_maxCount是计数器的最大值
     if (delta > _maxCount / 2) {
@@ -48,10 +48,9 @@ int32_t Encoder::getDelta() {
 
 float Encoder::getPos() {
     getDelta(); 
-    _position += (float)_delta / motor_ppr;
+    _position += _delta;
     return _position;
 }
-
 
 void Encoder::reset() {
     __HAL_TIM_SET_COUNTER(_htim, 0);

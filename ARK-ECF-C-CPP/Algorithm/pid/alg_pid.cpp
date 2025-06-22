@@ -14,7 +14,7 @@ void Class_PID_c::Init(float __K_P, float __K_I, float __K_D, float __K_F, float
     K_D_ = __K_D;
     K_F_ = __K_F;
 
-     I_Out_Max_ =  __I_Out_Max;
+    I_Out_Max_ =  __I_Out_Max;
     Out_Max_ = __Out_Max;
 
     D_T_ = __D_T;

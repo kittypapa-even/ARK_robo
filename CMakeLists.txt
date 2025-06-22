@@ -35,7 +35,9 @@ project(${CMAKE_PROJECT_NAME})
 message("Build type: " ${CMAKE_BUILD_TYPE})
 
 # Create an executable object type
-add_executable(${CMAKE_PROJECT_NAME})
+add_executable(${CMAKE_PROJECT_NAME}
+        TASK/arm_task.cpp
+        TASK/arm_task.hpp)
 
 # Add STM32CubeMX generated sources
 add_subdirectory(cmake/stm32cubemx)
@@ -50,6 +52,7 @@ target_sources(${CMAKE_PROJECT_NAME} PRIVATE
     # Add user sources here
         TASK/task.cpp
         TASK/chassis_task.cpp
+        TASK/arm_task.cpp
         ARK-ECF-C-CPP/Algorithm/pid/alg_pid.cpp
         ARK-ECF-C-CPP/Algorithm/math/math.hpp
         ARK-ECF-C-CPP/App

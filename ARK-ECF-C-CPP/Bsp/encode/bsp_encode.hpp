@@ -27,16 +27,16 @@ class Encoder {
 public:
     Encoder(TIM_HandleTypeDef* htim, int32_t max_count = 0xFFFF);
     void start();                         // 启动编码器
-    int32_t getCount();                   // 获取当前编码器计数值
-    int32_t getDelta();                   // 获取本次与上次计数值的差值（处理溢出）
+    int32_t getCount() const;                   // 获取当前编码器计数值
+    float getDelta();                   // 获取本次与上次计数值的差值（处理溢出）
     float getPos();                     // 获取当前编码器位置
     void reset();                         // 重置编码器计数
 
 private:
     TIM_HandleTypeDef* _htim;
-    int32_t _lastCount;
-    int32_t _maxCount;
-    int32_t _delta = 0;             // 当前一次位置变化值
+    float _lastCount;
+    float _maxCount;
+    float _delta = 0;             // 当前一次位置变化值
     float _position = 0.0f;         // 累计位置（单位：圈）
 };
 

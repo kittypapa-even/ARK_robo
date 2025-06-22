@@ -1,7 +1,7 @@
 #include "task.hpp"
 
-float current_ccr;
 uint32_t current_pulse;
+extern uint8_t  myUsbRxData[64];   // 接收到的数据
 
 void init() {
     chassis_c::chassis_instance.init(); // 初始化底盘
@@ -40,8 +40,10 @@ void loop() {
  }
  void arm(void const * argument)
  {
+     // arm_task_c::instance().init(); // 初始化机械臂
      while(1)
      {
+         // arm_task_c::instance().loop(); // 循环获取速度并设置轮子速度
          osDelay(1);
      }
  }
