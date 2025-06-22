@@ -36,7 +36,7 @@ void chassis_c::loop()
     this->getspeed();
     // 设置轮子速度
     // wheel.LF_MOTOR->setspeedF(wheel.LF_MOTOR->speed);
-    wheel.LF_MOTOR->setspeedF(50);
+    wheel.LF_MOTOR->setspeedF(60);
     wheel.RF_MOTOR->setspeedF(wheel.RF_MOTOR->speed);
     wheel.LB_MOTOR->setspeedF(wheel.LB_MOTOR->speed);
     wheel.RB_MOTOR->setspeedF(wheel.RB_MOTOR->speed);
