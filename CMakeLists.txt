@@ -37,7 +37,9 @@ message("Build type: " ${CMAKE_BUILD_TYPE})
 # Create an executable object type
 add_executable(${CMAKE_PROJECT_NAME}
         TASK/arm_task.cpp
-        TASK/arm_task.hpp)
+        TASK/arm_task.hpp
+        ARK-ECF-C-CPP/Bsp/usart/bsp_usart.cpp
+        ARK-ECF-C-CPP/Bsp/usart/bsp_usart.hpp)
 
 # Add STM32CubeMX generated sources
 add_subdirectory(cmake/stm32cubemx)
@@ -59,6 +61,9 @@ target_sources(${CMAKE_PROJECT_NAME} PRIVATE
         ARK-ECF-C-CPP/Bsp/dwt/bsp_dwt.cpp
         ARK-ECF-C-CPP/Bsp/encode/bsp_encode.cpp
         ARK-ECF-C-CPP/Bsp/PWM/bsp_pwm.cpp
+        ARK-ECF-C-CPP/Bsp/usart/bsp_usart.cpp
+        ARK-ECF-C-CPP/Bsp/oled/oled.c
+        ARK-ECF-C-CPP/Bsp/oled/font.c
         ARK-ECF-C-CPP/module/motor/brush_motor.cpp
 )
 
@@ -72,6 +77,8 @@ target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
         ARK-ECF-C-CPP/Bsp/dwt
         ARK-ECF-C-CPP/Bsp/encode
         ARK-ECF-C-CPP/Bsp/PWM
+        ARK-ECF-C-CPP/Bsp/usart
+        ARK-ECF-C-CPP/Bsp/oled
         ARK-ECF-C-CPP/module/motor
 )
 

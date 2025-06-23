@@ -2,13 +2,17 @@
   <dictionary name="project">
     <words>
       <w>brushmotor</w>
+      <w>cplt</w>
       <w>exti</w>
       <w>getspeed</w>
       <w>gpioa</w>
+      <w>huart</w>
+      <w>huartx</w>
       <w>oled</w>
       <w>remotetask</w>
       <w>setspeed</w>
       <w>systick</w>
+      <w>usart</w>
     </words>
   </dictionary>
 </component>

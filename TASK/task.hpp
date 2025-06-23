@@ -14,6 +14,8 @@ extern "C" {
 #include "FreeRTOS.h"
 #include "main.h"
 #include "cmsis_os.h"
+#include "oled.h"
+#include "font.h"
 
  void remotetask(void const * argument);
  void chassis(void const * argument);

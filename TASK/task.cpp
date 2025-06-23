@@ -49,9 +49,15 @@ void loop() {
  }
  void oled(void const * argument)
  {
+    OLED_Init();
     while(1)
     {
-      osDelay(1);
+        OLED_NewFrame();
+        OLED_PrintString(30, 2, "R", &font90x60, OLED_COLOR_NORMAL);
+        // OLED_PrintString(0, 0, "B", &font48x60, OLED_COLOR_NORMAL);
+        // OLED_PrintString(0, 0, "G", &font62x61, OLED_COLOR_NORMAL);
+        OLED_ShowFrame();
+        osDelay(100);
     }
  }
 
