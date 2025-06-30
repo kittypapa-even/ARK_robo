@@ -2,51 +2,59 @@
 
 uint32_t current_pulse;
 extern uint8_t  myUsbRxData[64];   // 接收到的数据
-
-void init() {
-    chassis_c::chassis_instance.init(); // 初始化底盘
+float pos=0;
+int32_t vel=0;
+int16_t usart_RX[1];
+// void init() {
+//     chassis_c::chassis_instance.init(); // 初始化底盘
+// }
+//
+// void loop() {
+//     chassis_c::chassis_instance.loop(); // 循环获取速度并设置轮子速度
+// }
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+{
+    if (huart==&huart3) {
+        HAL_UART_Receive_IT(&huart3,(uint8_t *)usart_RX,1);
+    }
 }
 
-void loop() {
-    chassis_c::chassis_instance.loop(); // 循环获取速度并设置轮子速度
-}
  void remotetask(void const * argument)
  {
+     HAL_UART_Receive_IT(&huart3,(uint8_t *)usart_RX,1);
      while(1)
      {
          osDelay(1);
      }
  }
+
  void chassis(void const * argument)
  {
-   // brush_motor_part::brushmotor_c motor_right(&htim3, 1);
-   chassis_c::chassis_instance.init(); // 初始化底盘
-    // chassis_c::instance().init(); // 初始化底盘
-    //  bsp_pwm_part::PWMInstance_c pwm_right(&htim3, 1);
-    //  bsp_pwm_part::PWMInstance_c pwm_left(&htim3, 2);
-    // HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);
-    // HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_2);
+   // chassis_c::chassis_instance.init(); // 初始化底盘
+    chassis_c::instance().init(); // 初始化底盘
     while (1)
     {
         current_pulse = __HAL_TIM_GET_COMPARE(&htim3, TIM_CHANNEL_1);
-        // current_ccr= pwm_right.getDuty();
-         // motor_right.setspeedF(50.0f);
-      chassis_c::chassis_instance.loop(); // 循环获取速度并设置轮子速度
-        // chassis_c::instance().loop(); // 循环获取速度并设置轮子速度
-        // pwm_right.setDuty(50.0f); // 设置右侧PWM占空比为50%
-        // pwm_left.setDuty(0.0f); // 设置左侧PWM占空比为50%
+      // chassis_c::chassis_instance.loop(); // 循环获取速度并设置轮子速度
+        chassis_c::instance().loop(); // 循环获取速度并设置轮子速度
         osDelay(1); // 延时1毫秒，避免过快循环
     }
  }
+
  void arm(void const * argument)
  {
-     // arm_task_c::instance().init(); // 初始化机械臂
+     arm_task_c::instance().init(); // 初始化机械臂
+     // HAL_TIM_Encoder_Start(&htim5, TIM_CHANNEL_ALL);
      while(1)
      {
-         // arm_task_c::instance().loop(); // 循环获取速度并设置轮子速度
+         arm_task_c::instance().loop(); // 循环获取速度并设置轮子速度
+         pos= arm_task_c::instance().getpos(); // 获取机械臂位置
+         // pos=__HAL_TIM_GET_COUNTER(&htim5); // 获取机械臂位置
+         vel= arm_task_c::instance().getvel(); // 获取机械臂速度
          osDelay(1);
      }
  }
+
  void oled(void const * argument)
  {
     OLED_Init();

@@ -24,6 +24,7 @@
 /* Private types -------------------------------------------------------------*/
 
 /* Private variables ---------------------------------------------------------*/
+extern int16_t usart_RX[1];
 
 void chassis_c::init()
 {
@@ -36,7 +37,7 @@ void chassis_c::loop()
     this->getspeed();
     // 设置轮子速度
     // wheel.LF_MOTOR->setspeedF(wheel.LF_MOTOR->speed);
-    wheel.LF_MOTOR->setspeedF(60);
+    wheel.LF_MOTOR->setspeedF(wheel.LF_MOTOR->speed);
     wheel.RF_MOTOR->setspeedF(wheel.RF_MOTOR->speed);
     wheel.LB_MOTOR->setspeedF(wheel.LB_MOTOR->speed);
     wheel.RB_MOTOR->setspeedF(wheel.RB_MOTOR->speed);
@@ -49,12 +50,48 @@ void chassis_c::loop()
 
 void chassis_c::getspeed()
 {
-    this->speed.vx = 0.0f; 
-    this->speed.vy = 0.0f; 
-    this->speed.vw = 0.0f; 
+    // this->speed.vx = 0.0f;
+    // this->speed.vy = 0.0f;
+    // this->speed.vw = 0.0f;
+    if (usart_RX[0]==81) {
+        this->speed.vx = 50.0f;
+        this->speed.vy = 0.0f;
+        this->speed.vw = 0.0f;
+    }
+    else if (usart_RX[0]==113) {
+        this->speed.vx = 0.0f;
+        this->speed.vy = 50.0f;
+        this->speed.vw = 0.0f;
+    }
+    else if (usart_RX[0]==129) {
+        this->speed.vx = 0.0f;
+        this->speed.vy = -50.0f;
+        this->speed.vw = 0.0f;
+    }
+    else if (usart_RX[0]==97) {
+        this->speed.vx = -50.0f;
+        this->speed.vy = 0.0f;
+        this->speed.vw = 0.0f;
+    }
+    else if (usart_RX[0]==161) {
+        this->speed.vx = 0.0f;
+        this->speed.vy = 0.0f;
+        this->speed.vw = 50.0f;
+    }
+    else if (usart_RX[0]==177) {
+        this->speed.vx = 0.0f;
+        this->speed.vy = 0.0f;
+        this->speed.vw = -50.0f;
+    }
+    else {
+        this->speed.vx = 0.0f;
+        this->speed.vy = 0.0f;
+        this->speed.vw = 0.0f;
+    }
+
 
     float R = 1.0f ; // 底盘旋转补偿因子，可调节旋转响应，R越大转向速度占比越大，各轮速度差更明显，以1.0为界限
-    // 麦轮解算
+    // 麦轮解算,X型
     wheel.LF_MOTOR->speed = speed.vx - speed.vy - R * speed.vw;
     wheel.RF_MOTOR->speed = speed.vx + speed.vy + R * speed.vw;
     wheel.LB_MOTOR->speed = speed.vx + speed.vy - R * speed.vw;
@@ -79,11 +116,11 @@ void chassis_c::getspeed()
 }
 
 // 创建单例
- chassis_c chassis_c::chassis_instance;
+ // chassis_c chassis_c::chassis_instance;
 
-// chassis_c& chassis_c::instance() {
-//     static chassis_c instance;  // 运行时构造，避免编译时提前链接所有依赖
-//     return instance;
-// }
+chassis_c& chassis_c::instance() {
+    static chassis_c instance;  // 运行时构造，避免编译时提前链接所有依赖
+    return instance;
+}
 
 

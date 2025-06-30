@@ -84,25 +84,28 @@ public:
         shoulder_encode = new Encoder(&htim2, 65535); // 65535是16位计数器的最大值
         elbow_encode = new Encoder(&htim8, 65535);
         paw_encode = new Encoder(&htim5, 65535);
+        // 启动编码器
+        shoulder_encode->start();
+        elbow_encode->start();
+        paw_encode->start();
         // 初始化电机数据
-        shoulder_data.init(1.0f, 0.1f, 0.01f, 0.0f, 10.0f, 100.0f, 0.001f, 0.0f,
+        shoulder_data.init(0.1f, 0.0f, 0.0f, 0.0f, 10.0f, 100.0f, 0.001f, 20.0f,
              0.0f, 0.0f, 0.0f, PID_D_First_DISABLE ,
-             1.0f, 0.1f, 0.01f, 0.0f, 10.0f, 100.0f, 0.001f, 0.0f,
+             0.1f, 0.0f, 0.0f, 0.0f, 10.0f, 100.0f, 0.001f, 5.0f,
              0.0f, 0.0f, 0.0f, PID_D_First_DISABLE);
 
-        elbow_data.init(1.0f, 0.1f, 0.01f, 0.0f, 10.0f, 100.0f, 0.001f, 0.0f,
+        elbow_data.init(0.1f, 0.0f, 0.0f, 0.0f, 10.0f, 100.0f, 0.001f, 20.0f,
             0.0f, 0.0f, 0.0f, PID_D_First_DISABLE,
-            1.0f, 0.1f, 0.01f, 0.0f, 10.0f, 100.0f, 0.001f, 0.0f,
+            0.1f, 0.0f, 0.0f, 0.0f, 10.0f, 100.0f, 0.001f, 5.0f,
             0.0f, 0.0f, 0.0f, PID_D_First_DISABLE);
 
-        paw_data.init(1.0f, 0.1f, 0.01f, 0.0f, 10.0f, 100.0f, 0.001f, 0.0f,
+        paw_data.init(0.1f, 0.0f, 0.0f, 0.0f, 10.0f, 100.0f, 0.001f, 20.0f,
             0.0f, 0.0f, 0.0f, PID_D_First_DISABLE,
-            1.0f, 0.1f, 0.01f, 0.0f, 10.0f, 100.0f, 0.001f, 0.0f,
+            0.1f, 0.0f, 0.0f, 0.0f, 10.0f, 100.0f, 0.001f, 5.0f,
             0.0f, 0.0f, 0.0f, PID_D_First_DISABLE);
     }
     arm_c() = default;
 };
-
 
 class arm_task_c
 {
@@ -110,11 +113,13 @@ public:
     void init();
     void loop();
     void getdata();
+    float getpos();
+    float getvel();
 
 public:
     arm_c arm; // 机械臂实例
-    // 单例模式
 
+    // 单例模式
 public:
     // static arm_task_c arm_instance;
     static arm_task_c& instance() ;

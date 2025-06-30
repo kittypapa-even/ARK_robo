@@ -550,7 +550,7 @@ void HAL_TIM_Encoder_MspInit(TIM_HandleTypeDef* tim_encoderHandle)
     __HAL_RCC_GPIOA_CLK_ENABLE();
     __HAL_RCC_GPIOB_CLK_ENABLE();
     /**TIM2 GPIO Configuration
-    PA5     ------> TIM2_CH1
+    PA15     ------> TIM2_CH1
     PB3     ------> TIM2_CH2
     */
     GPIO_InitStruct.Pin = encode1_Pin;
@@ -820,7 +820,7 @@ void HAL_TIM_Encoder_MspDeInit(TIM_HandleTypeDef* tim_encoderHandle)
     __HAL_RCC_TIM2_CLK_DISABLE();
 
     /**TIM2 GPIO Configuration
-    PA5     ------> TIM2_CH1
+    PA15     ------> TIM2_CH1
     PB3     ------> TIM2_CH2
     */
     HAL_GPIO_DeInit(encode1_GPIO_Port, encode1_Pin);

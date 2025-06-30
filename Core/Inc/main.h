@@ -65,8 +65,6 @@ void Error_Handler(void);
 #define arm1_GPIO_Port GPIOA
 #define arm1A3_Pin GPIO_PIN_3
 #define arm1A3_GPIO_Port GPIOA
-#define encode1_Pin GPIO_PIN_5
-#define encode1_GPIO_Port GPIOA
 #define chassis1_Pin GPIO_PIN_6
 #define chassis1_GPIO_Port GPIOA
 #define chassis1A7_Pin GPIO_PIN_7
@@ -87,6 +85,8 @@ void Error_Handler(void);
 #define arm2_GPIO_Port GPIOA
 #define arm2A9_Pin GPIO_PIN_9
 #define arm2A9_GPIO_Port GPIOA
+#define encode1_Pin GPIO_PIN_15
+#define encode1_GPIO_Port GPIOA
 #define encode1B3_Pin GPIO_PIN_3
 #define encode1B3_GPIO_Port GPIOB
 #define chassis3_Pin GPIO_PIN_6

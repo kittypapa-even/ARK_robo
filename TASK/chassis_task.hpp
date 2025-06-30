@@ -35,9 +35,9 @@ typedef struct
 
 //轮组实例
 /* 
- *  / 1  2 \
+ *  / 3  2 \
  * 
- *  \ 4  3 /
+ *  \ 4  1 /
  * 
  */
 class Wheel_c
@@ -51,10 +51,10 @@ public:
     //轮子电机初始化构造 （这里写不写inline都可以吧？）
     inline void Init()
     {
-        LF_MOTOR = new brush_motor_part::brushmotor_c(&htim3, TIM_CHANNEL_1, TIM_CHANNEL_2);
+        LF_MOTOR = new brush_motor_part::brushmotor_c(&htim4, TIM_CHANNEL_1, TIM_CHANNEL_2);
         LB_MOTOR = new brush_motor_part::brushmotor_c(&htim4, TIM_CHANNEL_3, TIM_CHANNEL_4);
         RF_MOTOR = new brush_motor_part::brushmotor_c(&htim3, TIM_CHANNEL_3, TIM_CHANNEL_4);
-        RB_MOTOR = new brush_motor_part::brushmotor_c(&htim4, TIM_CHANNEL_1, TIM_CHANNEL_2);
+        RB_MOTOR = new brush_motor_part::brushmotor_c(&htim3, TIM_CHANNEL_1, TIM_CHANNEL_2);
     }
     Wheel_c() = default;
 };
@@ -72,8 +72,8 @@ public:
 
 // 单例模式
 public:
-    static chassis_c chassis_instance;
-    // static chassis_c& instance() ;
+    // static chassis_c chassis_instance;
+    static chassis_c& instance() ;
 public:
     chassis_c() = default;
     ~chassis_c() = default;

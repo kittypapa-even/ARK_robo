@@ -35,7 +35,7 @@ namespace bsp_pwm_part {
 
     void PWMInstance_c::setDuty(float duty) {
         if (duty < 0.0f) duty = 0.0f;
-        if (duty > 100.0f) duty = 100.0f;
+        if (duty > 98.0f) duty = 98.0f;
         m_duty = duty;
 
         uint32_t period = m_htim->Init.Period + 1;

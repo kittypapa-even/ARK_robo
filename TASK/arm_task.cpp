@@ -28,7 +28,7 @@ void arm_task_c::loop()
 
     arm.shoulder_data.target_position= 0.0f; // 设置目标位置
     arm.elbow_data.target_position= 0.0f; // 设置目标位置
-    arm.paw_data.target_position= 0.0f; // 设置目标位置
+    arm.paw_data.target_position= 5000.0f; // 设置目标位置
 
     float shoulder_set=arm.update(arm.shoulder_data.current_position, arm.shoulder_data.current_velocity, arm.shoulder_data.target_position, arm.shoulder_data);
     float elbow_set=arm.update(arm.elbow_data.current_position, arm.elbow_data.current_velocity, arm.elbow_data.target_position, arm.elbow_data);
@@ -51,13 +51,21 @@ void arm_task_c::getdata()
     arm.paw_data.current_position+=arm.paw_data.current_velocity;
 }
 
+float arm_task_c::getpos() {
+    return arm.paw_data.current_position;
+}
+
+float arm_task_c::getvel() {
+    return arm.paw_data.current_velocity;
+}
+
 float arm_c::update(float current_pos, float current_speed, float target_pos,arm_data_c &arm_data)
 {
     arm_data.position_pid.Set_Now(current_pos);
     arm_data.position_pid.Set_Target(target_pos);
     arm_data.position_pid.ECF_PID_Calculate();
 
-    float target_speed = shoulder_data.position_pid.Get_Out();
+    float target_speed = arm_data.position_pid.Get_Out();
     arm_data.velocity_pid.Set_Now(current_speed);
     arm_data.velocity_pid.Set_Target(target_speed);
     arm_data.velocity_pid.ECF_PID_Calculate();

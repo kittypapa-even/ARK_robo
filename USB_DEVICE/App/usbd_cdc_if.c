@@ -268,6 +268,8 @@ static int8_t CDC_Receive_FS(uint8_t* Buf, uint32_t *Len)
   myUsbRxNum = *Len;                              // 复制字节数
   memset(Buf, 0, 64);                             // 处理完数据，清0接收缓存;
 
+  CDC_Transmit_FS((uint8_t*)myUsbRxData, myUsbRxNum);
+
   // CubeMX生成的代码，保留
   USBD_CDC_SetRxBuffer(&hUsbDeviceFS, &Buf[0]);
   USBD_CDC_ReceivePacket(&hUsbDeviceFS);

@@ -16,6 +16,7 @@ extern "C" {
 #include "cmsis_os.h"
 #include "oled.h"
 #include "font.h"
+#include "usart.h"
 
  void remotetask(void const * argument);
  void chassis(void const * argument);
