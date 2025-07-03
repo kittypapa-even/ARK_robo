@@ -5,6 +5,7 @@
 #include "brush_motor.hpp"
 #include "bsp_pwm.hpp"
 #include "arm_task.hpp"
+#include "math.hpp"
 
 #ifdef __cplusplus
 extern "C" {
@@ -17,6 +18,7 @@ extern "C" {
 #include "oled.h"
 #include "font.h"
 #include "usart.h"
+#include "pack.h"
 
  void remotetask(void const * argument);
  void chassis(void const * argument);

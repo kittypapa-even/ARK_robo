@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <cmath>
 #include "brush_motor.hpp"
+#include "math.hpp"
 
 #ifdef __cplusplus
 extern "C" {
@@ -15,6 +16,7 @@ extern "C" {
 #include <string.h>
 #include "main.h"
 #include "tim.h"
+#include "pack.h"
 
 #ifdef __cplusplus
 }
@@ -51,10 +53,10 @@ public:
     //轮子电机初始化构造 （这里写不写inline都可以吧？）
     inline void Init()
     {
-        LF_MOTOR = new brush_motor_part::brushmotor_c(&htim4, TIM_CHANNEL_1, TIM_CHANNEL_2);
-        LB_MOTOR = new brush_motor_part::brushmotor_c(&htim4, TIM_CHANNEL_3, TIM_CHANNEL_4);
-        RF_MOTOR = new brush_motor_part::brushmotor_c(&htim3, TIM_CHANNEL_3, TIM_CHANNEL_4);
-        RB_MOTOR = new brush_motor_part::brushmotor_c(&htim3, TIM_CHANNEL_1, TIM_CHANNEL_2);
+        LF_MOTOR = new brush_motor_part::brushmotor_c(&htim4, TIM_CHANNEL_3, TIM_CHANNEL_4);
+        LB_MOTOR = new brush_motor_part::brushmotor_c(&htim3, TIM_CHANNEL_1, TIM_CHANNEL_2);
+        RF_MOTOR = new brush_motor_part::brushmotor_c(&htim4, TIM_CHANNEL_1, TIM_CHANNEL_2);
+        RB_MOTOR = new brush_motor_part::brushmotor_c(&htim3, TIM_CHANNEL_3, TIM_CHANNEL_4);
     }
     Wheel_c() = default;
 };

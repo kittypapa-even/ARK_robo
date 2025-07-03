@@ -1,21 +1,27 @@
 #include "task.hpp"
 
 uint32_t current_pulse;
-extern uint8_t  myUsbRxData[64];   // 接收到的数据
 float pos=0;
 int32_t vel=0;
 int16_t usart_RX[1];
-// void init() {
-//     chassis_c::chassis_instance.init(); // 初始化底盘
-// }
-//
-// void loop() {
-//     chassis_c::chassis_instance.loop(); // 循环获取速度并设置轮子速度
-// }
+float x;
+float y;
+float z;
+
+#define RX_BUF_SIZE 256
+uint8_t usart1_rx_buf[1]; // 临时接收 1 字节
+uint8_t ring_buffer[RX_BUF_SIZE];
+volatile uint16_t write_index = 0;
+extern uint8_t  myUsbRxData[64];   // 接收到的数据
+extern ReceivePacket_t packet;
+uint8_t RE_flag=0;
+
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
     if (huart==&huart3) {
-        HAL_UART_Receive_IT(&huart3,(uint8_t *)usart_RX,1);
+        ring_buffer[write_index++] = usart1_rx_buf[0];
+        if (write_index >= RX_BUF_SIZE) write_index = 0;
+        HAL_UART_Receive_IT(&huart3, (uint8_t *)usart1_rx_buf, 1); // 继续接收
     }
 }
 
@@ -24,6 +30,11 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
      HAL_UART_Receive_IT(&huart3,(uint8_t *)usart_RX,1);
      while(1)
      {
+         RE_flag = HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_15);
+         process_ring_buffer();
+         x=-normalize(packet.Vx); // 获取速度数据
+         y=-normalize(packet.Vy); // 获取速度数据
+         z=-normalize(packet.Vw); // 获取速度数据
          osDelay(1);
      }
  }

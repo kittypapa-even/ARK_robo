@@ -24,7 +24,8 @@
 /* Private types -------------------------------------------------------------*/
 
 /* Private variables ---------------------------------------------------------*/
-extern int16_t usart_RX[1];
+extern ReceivePacket_t packet;
+extern uint8_t RE_flag;
 
 void chassis_c::init()
 {
@@ -36,7 +37,6 @@ void chassis_c::loop()
     // 获取速度
     this->getspeed();
     // 设置轮子速度
-    // wheel.LF_MOTOR->setspeedF(wheel.LF_MOTOR->speed);
     wheel.LF_MOTOR->setspeedF(wheel.LF_MOTOR->speed);
     wheel.RF_MOTOR->setspeedF(wheel.RF_MOTOR->speed);
     wheel.LB_MOTOR->setspeedF(wheel.LB_MOTOR->speed);
@@ -50,52 +50,58 @@ void chassis_c::loop()
 
 void chassis_c::getspeed()
 {
-    // this->speed.vx = 0.0f;
-    // this->speed.vy = 0.0f;
-    // this->speed.vw = 0.0f;
-    if (usart_RX[0]==81) {
-        this->speed.vx = 50.0f;
-        this->speed.vy = 0.0f;
-        this->speed.vw = 0.0f;
-    }
-    else if (usart_RX[0]==113) {
-        this->speed.vx = 0.0f;
-        this->speed.vy = 50.0f;
-        this->speed.vw = 0.0f;
-    }
-    else if (usart_RX[0]==129) {
-        this->speed.vx = 0.0f;
-        this->speed.vy = -50.0f;
-        this->speed.vw = 0.0f;
-    }
-    else if (usart_RX[0]==97) {
-        this->speed.vx = -50.0f;
-        this->speed.vy = 0.0f;
-        this->speed.vw = 0.0f;
-    }
-    else if (usart_RX[0]==161) {
-        this->speed.vx = 0.0f;
-        this->speed.vy = 0.0f;
-        this->speed.vw = 50.0f;
-    }
-    else if (usart_RX[0]==177) {
-        this->speed.vx = 0.0f;
-        this->speed.vy = 0.0f;
-        this->speed.vw = -50.0f;
-    }
-    else {
-        this->speed.vx = 0.0f;
-        this->speed.vy = 0.0f;
-        this->speed.vw = 0.0f;
-    }
+    uint8_t MODE = packet.VELkey;
+    if (RE_flag==1) {
+        if (MODE == 0) {
+            if (abs(normalize_half(packet.Vx))<10) {
+                this->speed.vx=0;
+            }else {
+                this->speed.vx = -normalize_half(packet.Vx);
+            }
 
+            if (abs(normalize_half(packet.Vy))<10) {
+                this->speed.vy=0;
+            }else {
+                this->speed.vy = normalize_half(packet.Vy);
+            }
+
+            if (abs(normalize_half(packet.Vw))<10) {
+                this->speed.vw=0;
+            }else {
+                this->speed.vw = normalize_half(packet.Vw);
+            }
+        }
+        else if (MODE == 1) {
+            if (abs(normalize(packet.Vx))<10) {
+                this->speed.vx=0;
+            }else {
+                this->speed.vx = -normalize(packet.Vx);
+            }
+
+            if (abs(normalize(packet.Vy))<10) {
+                this->speed.vy=0;
+            }else {
+                this->speed.vy = normalize(packet.Vy);
+            }
+
+            if (abs(normalize(packet.Vw))<10) {
+                this->speed.vw=0;
+            }else {
+                this->speed.vw = normalize(packet.Vw);
+            }
+        }
+    }else {
+        this->speed.vx = 0.0f;
+        this->speed.vy = 0.0f;
+        this->speed.vw = 0.0f;
+    }
 
     float R = 1.0f ; // 底盘旋转补偿因子，可调节旋转响应，R越大转向速度占比越大，各轮速度差更明显，以1.0为界限
     // 麦轮解算,X型
-    wheel.LF_MOTOR->speed = speed.vx - speed.vy - R * speed.vw;
-    wheel.RF_MOTOR->speed = speed.vx + speed.vy + R * speed.vw;
-    wheel.LB_MOTOR->speed = speed.vx + speed.vy - R * speed.vw;
-    wheel.RB_MOTOR->speed = speed.vx - speed.vy + R * speed.vw;
+    wheel.LF_MOTOR->speed = speed.vx + speed.vy + R * speed.vw;
+    wheel.RF_MOTOR->speed = -speed.vx + speed.vy + R * speed.vw;
+    wheel.LB_MOTOR->speed = speed.vx - speed.vy + R * speed.vw;
+    wheel.RB_MOTOR->speed = -speed.vx - speed.vy + R * speed.vw;
 
     // 找最大绝对值，用于归一化
     float maxVal = std::max({

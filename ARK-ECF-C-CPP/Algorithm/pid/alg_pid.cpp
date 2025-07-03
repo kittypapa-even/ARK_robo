@@ -95,7 +95,7 @@ void Class_PID_c::ECF_PID_Calculate()
     }
     else
     {
-        //积分分离使能
+        //积分分离
         if (abs_error <  I_Separate_Threshold_)
         {
             Integral_Error += speed_ratio * D_T_ * error;
@@ -109,7 +109,6 @@ void Class_PID_c::ECF_PID_Calculate()
     }
 
 //计算微分输出
-
     if (D_First == PID_D_First_DISABLE)
     {
         //没有微分先行

@@ -64,13 +64,13 @@ float arm_c::update(float current_pos, float current_speed, float target_pos,arm
     arm_data.position_pid.Set_Now(current_pos);
     arm_data.position_pid.Set_Target(target_pos);
     arm_data.position_pid.ECF_PID_Calculate();
-
-    float target_speed = arm_data.position_pid.Get_Out();
-    arm_data.velocity_pid.Set_Now(current_speed);
-    arm_data.velocity_pid.Set_Target(target_speed);
-    arm_data.velocity_pid.ECF_PID_Calculate();
+    //float target_speed = arm_data.position_pid.Get_Out();
+    // arm_data.velocity_pid.Set_Now(current_speed);
+    // arm_data.velocity_pid.Set_Target(target_speed);
+    // arm_data.velocity_pid.ECF_PID_Calculate();
     // 获取输出
-    return arm_data.velocity_pid.Get_Out();
+    //return arm_data.velocity_pid.Get_Out();
+    return arm_data.position_pid.Get_Out();
 }
 
 // 创建单例
