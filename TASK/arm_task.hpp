@@ -8,10 +8,13 @@
 #include "brush_motor.hpp"
 #include "alg_pid.hpp"
 #include "bsp_encode.hpp"
+#include "math.hpp"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+#include "pack.h"
 
 #include <stdint.h>
 #include <string.h>
@@ -35,6 +38,7 @@ public:
     Class_PID_n::Class_PID_c velocity_pid;  // 速度环PID
     // 状态变量
     float current_position;   // 当前位置
+    float current_position_360; // 360度位置（用于处理360度编码器）
     float current_velocity;   // 当前速度
     float target_position;    // 目标位置
     // 控制周期
@@ -77,29 +81,22 @@ public:
     {
         // 初始化电机
         shoulder = new brush_motor_part::brushmotor_c(&htim9, TIM_CHANNEL_1, TIM_CHANNEL_2);
-        elbow = new brush_motor_part::brushmotor_c(&htim1, TIM_CHANNEL_1 , TIM_CHANNEL_2);
+        elbow = new brush_motor_part::brushmotor_c(&htim8, TIM_CHANNEL_1 , TIM_CHANNEL_2);
         paw = new brush_motor_part::brushmotor_c(&htim12, TIM_CHANNEL_1, TIM_CHANNEL_2);
         // 初始化编码器
-        shoulder_encode = new Encoder(&htim2, 65535); // 65535是16位计数器的最大值
-        elbow_encode = new Encoder(&htim8, 65535);
-        paw_encode = new Encoder(&htim5, 65535);
+        shoulder_encode = new Encoder(&htim5, 65535); // 65535是16位计数器的最大值
+        elbow_encode = new Encoder(&htim2, 65535);
         // 启动编码器
         shoulder_encode->start();
         elbow_encode->start();
-        paw_encode->start();
         // 初始化电机数据
-        shoulder_data.init(0.1f, 0.0f, 0.0f, 0.0f, 10.0f, 100.0f, 0.001f, 20.0f,
-             0.0f, 0.0f, 0.0f, PID_D_First_DISABLE ,
+        shoulder_data.init(9.5f, 0.5f, 0.0f, 0.0f, 10.0f, 90.0f, 0.001f, 1.0f,
+             10.0f, 20.0f, 3.0f, PID_D_First_DISABLE ,
              0.1f, 0.0f, 0.0f, 0.0f, 10.0f, 100.0f, 0.001f, 5.0f,
              0.0f, 0.0f, 0.0f, PID_D_First_DISABLE);
 
-        elbow_data.init(0.1f, 0.0f, 0.0f, 0.0f, 10.0f, 100.0f, 0.001f, 20.0f,
-            0.0f, 0.0f, 0.0f, PID_D_First_DISABLE,
-            0.1f, 0.0f, 0.0f, 0.0f, 10.0f, 100.0f, 0.001f, 5.0f,
-            0.0f, 0.0f, 0.0f, PID_D_First_DISABLE);
-
-        paw_data.init(0.1f, 0.0f, 0.0f, 0.0f, 10.0f, 100.0f, 0.001f, 20.0f,
-            0.0f, 0.0f, 0.0f, PID_D_First_DISABLE,
+        elbow_data.init(9.5f, 0.5f, 0.0f, 0.0f, 10.0f, 90.0f, 0.001f, 1.0f,
+            10.0f, 20.0f, 3.0f, PID_D_First_DISABLE,
             0.1f, 0.0f, 0.0f, 0.0f, 10.0f, 100.0f, 0.001f, 5.0f,
             0.0f, 0.0f, 0.0f, PID_D_First_DISABLE);
     }

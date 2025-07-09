@@ -32,6 +32,23 @@ int normalize_half(Type input) {
     return (input - 0) * (100.0f / 4096.0f) - 50.0f;
 }
 
+//-80~80 -> -360~360
+template <typename Type>
+float normalize_360_half(Type input) {
+    return (input + 80) * (720.0f / 160.0f) - 360.0f;
+}
+
+//-11536~11536 -> -360~360
+template <typename Type>
+float normalize_360(Type input) {
+    return (input + 11536) * (720.0f / 23072.0f) - 360.0f;
+}
+
+//-80~80 -> -360~360
+template <typename Type>
+float normalize_360_re(Type input) {
+    return (input + 80) * (720.0f / 160.0f) - 360.0f;
+}
 
 #endif
 

@@ -16,39 +16,59 @@
 /* Private types -------------------------------------------------------------*/
 
 /* Private variables ---------------------------------------------------------*/
+extern ReceivePacket_t packet;
 
 void arm_task_c::init()
 {
     arm.Init();
+    HAL_TIM_Base_Start_IT(&htim4);
 }
 
 void arm_task_c::loop()
 {
     this->getdata(); // 获取编码器数据
 
-    arm.shoulder_data.target_position= 0.0f; // 设置目标位置
-    arm.elbow_data.target_position= 0.0f; // 设置目标位置
-    arm.paw_data.target_position= 5000.0f; // 设置目标位置
+    if (packet.RESET) {
+        arm.shoulder_data.target_position= 0.0f;
+        arm.elbow_data.target_position= 0.0f;
+    }
+    else {
+        arm.shoulder_data.target_position= normalize_360_re(packet.shoulder); // 设置目标位置
+        arm.elbow_data.target_position= normalize_360_re(packet.elbow); // 设置目标位置
+    }
 
-    float shoulder_set=arm.update(arm.shoulder_data.current_position, arm.shoulder_data.current_velocity, arm.shoulder_data.target_position, arm.shoulder_data);
-    float elbow_set=arm.update(arm.elbow_data.current_position, arm.elbow_data.current_velocity, arm.elbow_data.target_position, arm.elbow_data);
-    float paw_set=arm.update(arm.paw_data.current_position, arm.paw_data.current_velocity, arm.paw_data.target_position, arm.paw_data);
+    float shoulder_set=arm.update(arm.shoulder_data.current_position_360, arm.shoulder_data.current_velocity, arm.shoulder_data.target_position, arm.shoulder_data);
+    float elbow_set=arm.update(arm.elbow_data.current_position_360, arm.elbow_data.current_velocity, arm.elbow_data.target_position, arm.elbow_data);
 
-    arm.shoulder->setspeedF(shoulder_set);
-    arm.elbow->setspeedF(elbow_set);
-    arm.paw->setspeedF(paw_set);
+    if (packet.ARMkey) {
+        arm.shoulder->setspeedF(0.0f);
+        arm.elbow->setspeedF(0.0f);
+    }
+    else {
+        arm.shoulder->setspeedF(shoulder_set);
+        arm.elbow->setspeedF(elbow_set);
+    }
+
+    if (packet.PAWkey1) {
+        arm.paw->setspeedF(50.0f);
+    }
+    else if (packet.PAWkey2) {
+        arm.paw->setspeedF(-50.0f);
+    }
+    else {
+        arm.paw->setspeedF(0.0f);
+    }
 }
 
 void arm_task_c::getdata()
 {
     arm.shoulder_data.current_velocity= arm.shoulder_encode->getDelta();
     arm.shoulder_data.current_position+=arm.shoulder_data.current_velocity;
+    arm.shoulder_data.current_position_360 = normalize_360(arm.shoulder_data.current_position); // 归一化到-360-360度
 
     arm.elbow_data.current_velocity= arm.elbow_encode->getDelta();
     arm.elbow_data.current_position+=arm.elbow_data.current_velocity;
-
-    arm.paw_data.current_velocity= arm.paw_encode->getDelta();
-    arm.paw_data.current_position+=arm.paw_data.current_velocity;
+    arm.elbow_data.current_position_360 = normalize_360(arm.elbow_data.current_position);
 }
 
 float arm_task_c::getpos() {

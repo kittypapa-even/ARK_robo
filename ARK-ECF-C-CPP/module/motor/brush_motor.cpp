@@ -54,7 +54,7 @@ namespace brush_motor_part {
             // 先停止PWM
             pwm_right.setDuty(0.0f);
             pwm_left.setDuty(0.0f);
-            dwt_motor->ECF_DWT_Delay_us(5); 
+            dwt_motor->ECF_DWT_Delay_us(50);
         }
 
         if (speed >= 0) {
@@ -80,7 +80,7 @@ namespace brush_motor_part {
             // 先停止PWM
             pwm_right.setDuty(0.0f);
             pwm_left.setDuty(0.0f);
-            dwt_motor->ECF_DWT_Delay_us(5);
+            dwt_motor->ECF_DWT_Delay_us(50);
         }
 
         if (speed >= 0) {

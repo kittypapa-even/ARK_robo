@@ -57,14 +57,16 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
-#define encode3_Pin GPIO_PIN_0
-#define encode3_GPIO_Port GPIOA
-#define encode3A1_Pin GPIO_PIN_1
-#define encode3A1_GPIO_Port GPIOA
+#define encode1_Pin GPIO_PIN_0
+#define encode1_GPIO_Port GPIOA
+#define encode1A1_Pin GPIO_PIN_1
+#define encode1A1_GPIO_Port GPIOA
 #define arm1_Pin GPIO_PIN_2
 #define arm1_GPIO_Port GPIOA
 #define arm1A3_Pin GPIO_PIN_3
 #define arm1A3_GPIO_Port GPIOA
+#define encode2_Pin GPIO_PIN_5
+#define encode2_GPIO_Port GPIOA
 #define chassis1_Pin GPIO_PIN_6
 #define chassis1_GPIO_Port GPIOA
 #define chassis1A7_Pin GPIO_PIN_7
@@ -77,18 +79,10 @@ void Error_Handler(void);
 #define paw_GPIO_Port GPIOB
 #define pawB15_Pin GPIO_PIN_15
 #define pawB15_GPIO_Port GPIOB
-#define encode2_Pin GPIO_PIN_6
-#define encode2_GPIO_Port GPIOC
-#define encode2C7_Pin GPIO_PIN_7
-#define encode2C7_GPIO_Port GPIOC
-#define arm2_Pin GPIO_PIN_8
+#define arm2_Pin GPIO_PIN_9
 #define arm2_GPIO_Port GPIOA
-#define arm2A9_Pin GPIO_PIN_9
-#define arm2A9_GPIO_Port GPIOA
-#define encode1_Pin GPIO_PIN_15
-#define encode1_GPIO_Port GPIOA
-#define encode1B3_Pin GPIO_PIN_3
-#define encode1B3_GPIO_Port GPIOB
+#define encode2B3_Pin GPIO_PIN_3
+#define encode2B3_GPIO_Port GPIOB
 #define chassis3_Pin GPIO_PIN_6
 #define chassis3_GPIO_Port GPIOB
 #define chassis3B7_Pin GPIO_PIN_7
