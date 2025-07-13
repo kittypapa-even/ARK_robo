@@ -17,6 +17,7 @@
 
 /* Private variables ---------------------------------------------------------*/
 extern ReceivePacket_t packet;
+extern uint8_t RE_flag;
 
 void arm_task_c::init()
 {
@@ -40,24 +41,32 @@ void arm_task_c::loop()
     float shoulder_set=arm.update(arm.shoulder_data.current_position_360, arm.shoulder_data.current_velocity, arm.shoulder_data.target_position, arm.shoulder_data);
     float elbow_set=arm.update(arm.elbow_data.current_position_360, arm.elbow_data.current_velocity, arm.elbow_data.target_position, arm.elbow_data);
 
-    if (packet.ARMkey) {
+    if (RE_flag==1) {
+        if (packet.ARMkey) {
+            arm.shoulder->setspeedF(0.0f);
+            arm.elbow->setspeedF(0.0f);
+        }
+        else {
+            arm.shoulder->setspeedF(shoulder_set);
+            arm.elbow->setspeedF(elbow_set);
+        }
+
+        if (packet.PAWkey1) {
+            arm.paw->setspeedF(95.0f);
+        }
+        else if (packet.PAWkey2) {
+            arm.paw->setspeedF(-95.0f);
+        }
+        else {
+            arm.paw->setspeedF(0.0f);
+        }
+    }
+    else {
         arm.shoulder->setspeedF(0.0f);
         arm.elbow->setspeedF(0.0f);
-    }
-    else {
-        arm.shoulder->setspeedF(shoulder_set);
-        arm.elbow->setspeedF(elbow_set);
-    }
-
-    if (packet.PAWkey1) {
-        arm.paw->setspeedF(50.0f);
-    }
-    else if (packet.PAWkey2) {
-        arm.paw->setspeedF(-50.0f);
-    }
-    else {
         arm.paw->setspeedF(0.0f);
     }
+
 }
 
 void arm_task_c::getdata()
@@ -72,11 +81,11 @@ void arm_task_c::getdata()
 }
 
 float arm_task_c::getpos() {
-    return arm.paw_data.current_position;
+    return arm.shoulder_data.current_position;
 }
 
 float arm_task_c::getvel() {
-    return arm.paw_data.current_velocity;
+    return arm.elbow_data.current_velocity;
 }
 
 float arm_c::update(float current_pos, float current_speed, float target_pos,arm_data_c &arm_data)

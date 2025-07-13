@@ -66,12 +66,10 @@ public:
     // 编码器
     Encoder* shoulder_encode;  // 肩部编码器
     Encoder* elbow_encode;     // 肘部编码器
-    Encoder* paw_encode;       // 爪部编码器
 
     // 电机数据实例
     arm_data_c shoulder_data;  // 肩部电机数据
     arm_data_c elbow_data;     // 肘部电机数据
-    arm_data_c paw_data;       // 爪部电机数据
 
 public:
     float update(float current_pos, float current_speed, float target_pos,arm_data_c &arm_data);

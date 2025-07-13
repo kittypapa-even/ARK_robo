@@ -33,6 +33,7 @@ extern const Font font62x61;
 extern const Font font55x60;//红
 extern const Font font56x60;//蓝
 extern const Font font54x60;//黄
+extern const Font font58x60;//无
 /**
  * @brief 图片结构体
  * @note  图片数据可以使用波特律动LED取模助手生成(https://led.baud-dance.com)

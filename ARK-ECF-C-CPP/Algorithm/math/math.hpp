@@ -20,16 +20,16 @@ Type Math_Abs(Type x)
     return ((x > 0) ? x : -x);
 }
 
-//0~4096 -> -95~95
+//0~4096 -> -65~65
 template <typename Type>
 int normalize(Type input) {
-    return (input - 0) * (190.0f / 4096.0f) - 95.0f;
+    return (input - 0) * (130.0f / 4096.0f) - 65.0f;
 }
 
-//0~4096 -> -50~50
+//0~4096 -> -20~20
 template <typename Type>
 int normalize_half(Type input) {
-    return (input - 0) * (100.0f / 4096.0f) - 50.0f;
+    return (input - 0) * (40.0f / 4096.0f) - 20.0f;
 }
 
 //-80~80 -> -360~360

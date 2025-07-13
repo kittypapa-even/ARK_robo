@@ -119,7 +119,7 @@ void MX_FREERTOS_Init(void) {
   remote_taskHandle = osThreadCreate(osThread(remote_task), NULL);
 
   /* definition and creation of chassis_task */
-  osThreadDef(chassis_task, chassis, osPriorityNormal, 0, 1024);
+  osThreadDef(chassis_task, chassis, osPriorityNormal, 0, 512);
   chassis_taskHandle = osThreadCreate(osThread(chassis_task), NULL);
 
   /* definition and creation of arm_task */
@@ -127,7 +127,7 @@ void MX_FREERTOS_Init(void) {
   arm_taskHandle = osThreadCreate(osThread(arm_task), NULL);
 
   /* definition and creation of oled_task */
-  osThreadDef(oled_task, oled, osPriorityNormal, 0, 512);
+  osThreadDef(oled_task, oled, osPriorityNormal, 0, 1024);
   oled_taskHandle = osThreadCreate(osThread(oled_task), NULL);
 
   /* USER CODE BEGIN RTOS_THREADS */
